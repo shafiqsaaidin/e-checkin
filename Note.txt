@@ -1,0 +1,53 @@
+#SCAN DB##
+
+tables
+> user
+> admin
+> public
+
+
+user
+------
+>ic (primary key)
+>nama
+>no_matrik
+>kelas
+>jabatan
+>blok
+
+admin
+------
+>username
+>password
+>email
+
+public
+-------
+>ic
+>time
+
+
+
+##########
+DATABASE
+##########
+
+table user
+-------------
+CREATE TABLE user ( ic VARCHAR(15) PRIMARY KEY, nama VARCHAR(100) NOT NULL, no_matrik VARCHAR(15) NOT NULL, kelas VARCHAR(15) NOT NULL, jabatan VARCHAR(15) NOT NULL, kamsis VARCHAR(15) NOT NULL );
+
+table public
+---------------
+CREATE TABLE public ( ic VARCHAR(15), FOREIGN KEY (ic) REFERENCES user(ic), masuk TIMESTAMP, keluar TIMESTAMP );
+
+
+("DELETE FROM PM_TABLE
+              WHERE date <= NOW() - INTERVAL 60 SECOND");
+
+SELECT nama, no_matrik, user.ic, kelas, jabatan, kamsis, keluar, masuk FROM user JOIN public ON user.ic = public.ic;
+
+table admin
+------------
+CREATE TABLE admin ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, username VARCHAR(30) NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(100) NOT NULL);
+
+INSERT INTO admin ( username, password, email) VALUES ( 'musha', ENCRYPT('check', '123qwe'), 'mushagh@gmail.com');

@@ -1,0 +1,23 @@
+/* Admin page sidebar */
+.well i {
+  color: #5ac1de;
+  font-size: 30px;
+}
+.well:hover {
+  opacity: 0.7;
+}
+
+.table-bg {
+  background-color: #5ac1de;
+  color: #fff;
+}
+/* Navbar */
+.navbar {
+  border-radius: 0 !important;
+}
+
+/* Login page */
+.logo1 {
+  display: block;
+  margin: auto;
+}
