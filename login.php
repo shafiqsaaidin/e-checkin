@@ -19,6 +19,7 @@
     }else {
       header("location: login.php");
     }
+    mysqli_close($conn);
   }
 ?>
 <body>

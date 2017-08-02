@@ -40,6 +40,7 @@
                         <th>Kelas</th>
                         <th>Jabatan</th>
                         <th>Kamsis</th>
+                        <th>Bilik</th>
                         <th>Waktu Keluar</th>
                         <th>Waktu Masuk</th>
                     </tr>
@@ -47,7 +48,7 @@
                 <tbody>
                     <?php
                             //$sql = "SELECT * FROM public";
-                            $sql = "SELECT nama, no_matrik, kelas, jabatan, kamsis, keluar, masuk FROM user JOIN public ON user.ic = public.ic";
+                            $sql = "SELECT nama, no_matrik, kelas, jabatan, kamsis, no_bilik, keluar, masuk FROM user JOIN public ON user.ic = public.ic";
                             $result = mysqli_query($conn,$sql);
                             while ($row = mysqli_fetch_array($result)) {
                             echo "<tr>";
@@ -56,6 +57,7 @@
                             echo "<td>" . $row['kelas'] . "</td>";
                             echo "<td>" . $row['jabatan'] . "</td>";
                             echo "<td>" . $row['kamsis'] . "</td>";
+                            echo "<td>" . $row['no_bilik'] . "</td>";
                             echo "<td>" . $row['keluar'] . "</td>";
                             echo "<td>" . $row['masuk'] . "</td>";
                             echo "</tr>";

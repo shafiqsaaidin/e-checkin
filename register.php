@@ -5,22 +5,23 @@
     //$ic = $nama = $no_matrik = $kelas = $jabatan = $kamsis = '';
     $msg = $msgClass = '';
 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $ic = $_POST['ic'];
-        $nama = strtoupper($_POST['nama']);
-        $no_matrik = strtoupper($_POST['no_matrik']);
-        $kelas = strtoupper($_POST['kelas']);
-        $jabatan = strtoupper($_POST['jabatan']);
-        $kamsis = strtoupper($_POST['kamsis']);
+    if(isset($_POST['submit'])){
+        $ic = mysqli_real_escape_string($conn, $_POST['ic']);
+        $nama = mysqli_real_escape_string($conn, strtoupper($_POST['nama']));
+        $no_matrik = mysqli_real_escape_string($conn, strtoupper($_POST['no_matrik']));
+        $kelas = mysqli_real_escape_string($conn, strtoupper($_POST['kelas']));
+        $jabatan = mysqli_real_escape_string($conn, strtoupper($_POST['jabatan']));
+        $kamsis = mysqli_real_escape_string($conn, strtoupper($_POST['kamsis']));
+        $bilik = mysqli_real_escape_string($conn, strtoupper($_POST['bilik']));
 
-        $sql = "INSERT INTO user (ic, nama, no_matrik, kelas, jabatan, kamsis)
-        VALUES ('$ic','$nama', '$no_matrik', '$kelas', '$jabatan', '$kamsis')";
+        $sql = "INSERT INTO user (ic, nama, no_matrik, kelas, jabatan, kamsis, no_bilik)
+        VALUES ('$ic','$nama', '$no_matrik', '$kelas', '$jabatan', '$kamsis', '$bilik')";
 
         if(mysqli_query($conn, $sql)){
-            $msg = "Register successfull";
+            $msg = "Registration successfull";
             $msgClass = 'alert-success';
         } else{
-            $msg = "Register error";
+            $msg = "Registration error";
             $msgClass = 'alert-danger';
         }
     }
@@ -56,35 +57,35 @@
                 </div>
             <?php endif ?>
             <div class="panel panel-info">
-                <div class="panel-heading"><h4>Borang Pendaftaran Pelajar</h4></div>
+                <div class="panel-heading"><h4>Student Registration Form</h4></div>
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                         <div class="form-group">
-                            <label class="control-label col-sm-3" for="ic">Kad Pengenalan:</label>
+                            <label class="control-label col-sm-3" for="ic">Identity Card:</label>
                             <div class="col-sm-9">
                               <input id="ic" type="text" required class="form-control" name="ic" placeholder="Ic">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-3" for="nama">Nama Penuh:</label>
+                            <label class="control-label col-sm-3" for="nama">Full Name:</label>
                             <div class="col-sm-9">
-                              <input id="nama" type="text" required class="form-control" name="nama" placeholder="Nama">
+                              <input id="nama" type="text" required class="form-control" name="nama" placeholder="Name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-3" for="no_matrik">Number Matrik:</label>
+                            <label class="control-label col-sm-3" for="no_matrik">Matric Id:</label>
                             <div class="col-sm-9">
-                              <input id="no_matrik" type="text" required class="form-control" name="no_matrik" placeholder="No. Matrik">
+                              <input id="no_matrik" type="text" required class="form-control" name="no_matrik" placeholder="Matrik No.">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-3" for="kelas">Kelas:</label>
+                            <label class="control-label col-sm-3" for="kelas">Class:</label>
                             <div class="col-sm-9">
-                              <input id="kelas" type="text" required class="form-control" name="kelas" placeholder="Kelas">
+                              <input id="kelas" type="text" required class="form-control" name="kelas" placeholder="Class">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-3" for="jabatan">Jabatan:</label>
+                            <label class="control-label col-sm-3" for="jabatan">Department:</label>
                             <div class="col-sm-9">
                               <input id="jabatan" type="text" class="form-control" name="jabatan" placeholder="Jabatan">
                             </div>
@@ -93,7 +94,7 @@
                             <label class="control-label col-sm-3" for="kamsis">Kamsis:</label>
                             <div class="col-sm-9">
                                 <select id="kamsis" class="form-control" name="kamsis">
-                                    <option>sila pilih</option>
+                                    <option>Please Choose</option>
                                     <option value="delima">Delima</option>
                                     <option value="kasturi">Kasturi</option>
                                     <option value="mawar">Mawar</option>
@@ -101,7 +102,13 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-info pull-right" name="submit">Hantar</button>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="bilik">Room Number:</label>
+                            <div class="col-sm-9">
+                              <input id="bilik" type="text" class="form-control" name="bilik" placeholder="Room no.">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info pull-right" name="submit">Submit</button>
                     </form>
                 </div>
             </div>
