@@ -36,13 +36,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">E-Checkin</a>
+                <img class="navbar-brand" src="images/e_checkin.png"><a class="navbar-brand" href="#">E-Checkin</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.php">Home</a></li>
-                    <li class="active"><a href="register.php">Register</a></li>
-                    <li><a href="login.php">Login&nbsp<i class="fa fa-sign-in" aria-hidden="true"></i></a></li>
+                  <li><a href="index.php">Home&nbsp<i class="fa fa-home" aria-hidden="true"></i></a></li>
+                  <li class="active"><a href="register.php">Register&nbsp<i class="fa fa-user-plus" aria-hidden="true"></i></a></li>
+                  <li><a href="login.php">Login&nbsp<i class="fa fa-sign-in" aria-hidden="true"></i></a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>

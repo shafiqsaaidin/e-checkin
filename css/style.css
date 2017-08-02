@@ -16,6 +16,12 @@
   border-radius: 0 !important;
 }
 
+.nav-ico {
+  display: block;
+  height: 100px;
+  width: 100px;
+}
+
 /* Login page */
 .logo1 {
   display: block;
