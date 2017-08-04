@@ -20,16 +20,6 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="logout.php">Logout&nbsp<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search">
-              <div class="input-group-btn">
-                <button class="btn btn-info" type="submit">
-                  <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </form>
         </div>
       </div>
     </nav>

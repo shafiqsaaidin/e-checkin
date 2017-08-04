@@ -35,24 +35,26 @@
             <table class="table table-hover table-bordered">
                 <thead align="center">
                     <tr class="table-bg">
-                        <th>Nama</th>
-                        <th>Kad Matrik</th>
-                        <th>Kelas</th>
-                        <th>Jabatan</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Matric no</th>
+                        <th>Class</th>
+                        <th>Department</th>
                         <th>Kamsis</th>
-                        <th>Bilik</th>
-                        <th>Waktu Keluar</th>
-                        <th>Waktu Masuk</th>
+                        <th>Room</th>
+                        <th>Scan (out)</th>
+                        <th>Scan (in)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                             //$sql = "SELECT * FROM public";
-                            $sql = "SELECT nama, no_matrik, kelas, jabatan, kamsis, no_bilik, keluar, masuk FROM user JOIN public ON user.ic = public.ic";
+                            $sql = "SELECT nama, tarikh, no_matrik, kelas, jabatan, kamsis, no_bilik, keluar, masuk FROM user JOIN public ON user.ic = public.ic";
                             $result = mysqli_query($conn,$sql);
                             while ($row = mysqli_fetch_array($result)) {
                             echo "<tr>";
                             echo "<td>" . $row['nama'] . "</td>";
+                            echo "<td>" . $row['tarikh'] . "</td>";
                             echo "<td>" . $row['no_matrik'] . "</td>";
                             echo "<td>" . $row['kelas'] . "</td>";
                             echo "<td>" . $row['jabatan'] . "</td>";

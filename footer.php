@@ -8,7 +8,11 @@
         }, 1000);
         var $adminTable = $("#admin-table");
             setInterval(function () {
-            $adminTable.load("admin.php #admin-table");
+            $adminTable.load("admin_dashboard.php #admin-table");
         }, 1000);
+        var $dashboard = $("#dashboard");
+          setInterval(function(){
+            $dashboard.load("admin_dashboard.php #dashboard");
+          }, 1000);
     </script>
 </html>

@@ -2,6 +2,13 @@
   require 'header.php';
   require 'session.php';
   require_once 'connection.php';
+
+  function get_total_user() {
+    $total = mysqli_query($conn, "SELECT COUNT(ic) as total FROM user");
+    $row = mysqli_fetch_array($total);
+    return $row['total'];
+  }
+
 ?>
 <link rel="stylesheet" href="css/dashboard.css">
 <body>
@@ -20,16 +27,6 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="logout.php">Logout&nbsp<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
         </ul>
-        <form class="navbar-form navbar-right">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search">
-            <div class="input-group-btn">
-              <button class="btn btn-info" type="submit">
-                <i class="fa fa-search" aria-hidden="true"></i>
-              </button>
-            </div>
-          </div>
-        </form>
       </div>
     </div>
   </nav>
@@ -46,56 +43,78 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header"><i class="fa fa-address-book-o" aria-hidden="true"></i>&nbspDashboard</h1>
-
-          <div class="row placeholders">
-            <div class="col-sm-3 placeholder">
-              <div class="well">
-                <i class="fa fa-users" aria-hidden="true"></i>
-                <h4>Total User</h4>
-                <span class="text-muted">Something else</span>
+          <div id="dashboard">
+            <div class="row placeholders">
+              <div class="col-sm-3 placeholder">
+                <div class="well">
+                  <i class="fa fa-users" aria-hidden="true"></i>
+                  <h4>Total User</h4>
+                  <span class="badge">
+                    <?php
+                      $total = mysqli_query($conn, "SELECT COUNT(ic) as total FROM user");
+                      $row = mysqli_fetch_array($total);
+                      echo $row['total'];
+                    ?>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="col-sm-3 placeholder">
-              <div class="well">
-                <i class="fa fa-sign-out" aria-hidden="true"></i>
-                <h4>Outing student</h4>
-                <span class="text-muted">Something else</span>
+              <div class="col-sm-3 placeholder">
+                <div class="well">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  <h4>Outing student</h4>
+                  <span class="badge">
+                    <?php
+                      $total = mysqli_query($conn, "SELECT count(keluar) as total FROM public WHERE keluar!='' AND masuk=''");
+                      $row = mysqli_fetch_array($total);
+                      echo $row['total'];
+                    ?>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="col-sm-3 placeholder">
-              <div class="well">
-                <i class="fa fa-sign-in" aria-hidden="true"></i>
-                <h4>In student</h4>
-                <span class="text-muted">Something else</span>
+              <div class="col-sm-3 placeholder">
+                <div class="well">
+                  <i class="fa fa-sign-in" aria-hidden="true"></i>
+                  <h4>In student</h4>
+                  <span class="badge">
+                    <?php
+                      $total = mysqli_query($conn, "SELECT count(masuk) as total FROM public WHERE keluar!='' AND masuk!=''");
+                      $row = mysqli_fetch_array($total);
+                      echo $row['total'];
+                    ?>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="col-sm-3 placeholder">
-              <div class="well">
-                <i class="fa fa-check" aria-hidden="true"></i>
-                <h4>Pending User</h4>
-                <span class="text-muted">Something else</span>
+              <div class="col-sm-3 placeholder">
+                <div class="well">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                  <h4>Pending User</h4>
+                </div>
               </div>
             </div>
           </div>
-
-          <h2 class="sub-header">Students Table</h2>
+          <div class="row">
+            <div class="col-md-6">
+              <h2>Students Table</h2>
+            </div>
+          </div>
           <div id="admin-table" class="table-responsive">
-              <table class="table table-hover">
+              <table class="table table-hover table-bordered">
                 <thead>
                   <tr class="table-bg">
-                    <th>Nama</th>
-                    <th>Kad Matrik</th>
-                    <th>Kad Pengenalan</th>
-                    <th>Kelas</th>
-                    <th>Jabatan</th>
+                    <th>Name</th>
+                    <th>Matric no</th>
+                    <th>Ic no</th>
+                    <th>Class</th>
+                    <th>Department</th>
                     <th>Kamsis</th>
-                    <th>Waktu Keluar</th>
-                    <th>Waktu Masuk</th>
+                    <th>Room</th>
+                    <th>Scan (out)</th>
+                    <th>Scan (in)</th>
                   </tr>
                 </thead>
                   <tbody>
                     <?php
-                        $sql = "SELECT nama, no_matrik, user.ic, kelas, jabatan, kamsis, keluar, masuk FROM user JOIN public ON user.ic = public.ic";
+                        $sql = "SELECT nama, no_matrik, user.ic, kelas, jabatan, kamsis, no_bilik, keluar, masuk FROM user JOIN public ON user.ic = public.ic";
                         $result = mysqli_query($conn,$sql);
 
                         while ($row = mysqli_fetch_array($result)) {
@@ -106,6 +125,7 @@
                         echo "<td>" . $row['kelas'] . "</td>";
                         echo "<td>" . $row['jabatan'] . "</td>";
                         echo "<td>" . $row['kamsis'] . "</td>";
+                        echo "<td>" . $row['no_bilik'] . "</td>";
                         echo "<td>" . $row['keluar'] . "</td>";
                         echo "<td>" . $row['masuk'] . "</td>";
                         echo "</tr>";
