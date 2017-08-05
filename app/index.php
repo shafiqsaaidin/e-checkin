@@ -1,15 +1,15 @@
 <?php
     require '../connection.php';
 
-    $ic = htmlspecialchars($_GET['data']);
-
+    $ic = mysqli_real_escape_string($conn, $_GET['data']);
+    //$ic = '960117025308';
     // Query set for mysql
     $sql = "SELECT * FROM user WHERE ic=$ic";
 
     $sql1 = "INSERT INTO public(ic, masuk, keluar, tarikh, status)
         VALUES($ic, '', date_format(now(), '%r'), date_format(now(), '%d-%m-%Y'), 'pending')";
 
-    $sql2 = "UPDATE public SET masuk=date_format(now(), '%r') WHERE ic=$ic AND masuk=''";
+    $sql2 = "UPDATE public SET masuk=date_format(now(), '%r') WHERE ic=$ic AND masuk='' AND status='approve'";
 
     // User check
     $check_user = mysqli_query($conn, $sql);

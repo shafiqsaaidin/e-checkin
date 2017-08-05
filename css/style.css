@@ -1,3 +1,7 @@
+th, tr {
+  text-align: center;
+}
+
 /* Admin page sidebar */
 .well i {
   color: #5ac1de;
@@ -20,6 +24,24 @@
   display: block;
   height: 100px;
   width: 100px;
+}
+
+/* Public page */
+.bg-img {
+  background-color: #5ac1de;
+  color: #fff;
+  width: 100%;
+}
+
+.bg-img h1 {
+  font-size: 70px;
+  font-style: italic;
+  font-weight: bold;
+  height: auto
+}
+
+#information {
+  margin-top: 25px;
 }
 
 /* Login page */
