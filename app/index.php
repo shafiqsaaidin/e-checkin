@@ -1,8 +1,9 @@
 <?php
     require '../connection.php';
 
-    $ic = mysqli_real_escape_string($conn, $_GET['data']);
+    //$ic = mysqli_real_escape_string($conn, $_GET['data']);
     //$ic = '960117025308';
+    $ic = '960117025307';
     // Query set for mysql
     $sql = "SELECT * FROM user WHERE ic=$ic";
 

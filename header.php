@@ -6,6 +6,6 @@
         <link rel="stylesheet" href="css/readable.bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
-        <title>E-Checkin | Kamsis</title>
+        <title>E-Checkin | Residential College</title>
         <link rel="icon" href="images/e_checkin.png" />
     </head>

@@ -90,16 +90,9 @@ body {
  */
 
 .placeholders {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   text-align: center;
 }
 .placeholders h4 {
   margin-bottom: 0;
-}
-.placeholder {
-  margin-bottom: 20px;
-}
-.placeholder img {
-  display: inline-block;
-  border-radius: 50%;
 }

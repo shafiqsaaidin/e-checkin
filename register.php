@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="ic">Identity Card:</label>
                             <div class="col-sm-9">
-                              <input id="ic" type="text" required class="form-control" name="ic" placeholder="Ic">
+                              <input id="ic" type="text" required class="form-control" name="ic" placeholder="Ic no.">
                             </div>
                         </div>
                         <div class="form-group">
@@ -73,9 +73,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-3" for="no_matrik">Matric Id:</label>
+                            <label class="control-label col-sm-3" for="no_matrik">Matric Number:</label>
                             <div class="col-sm-9">
-                              <input id="no_matrik" type="text" required class="form-control" name="no_matrik" placeholder="Matrik No.">
+                              <input id="no_matrik" type="text" required class="form-control" name="no_matrik" placeholder="Matrik no.">
                             </div>
                         </div>
                         <div class="form-group">
@@ -87,18 +87,19 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="jabatan">Department:</label>
                             <div class="col-sm-9">
-                              <input id="jabatan" type="text" class="form-control" name="jabatan" placeholder="Jabatan">
+                              <input id="jabatan" type="text" class="form-control" name="jabatan" placeholder="Department">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-3" for="kamsis">Kamsis:</label>
+                            <label class="control-label col-sm-3" for="kamsis">Residential College:</label>
                             <div class="col-sm-9">
                                 <select id="kamsis" class="form-control" name="kamsis">
                                     <option>Please Choose</option>
                                     <option value="delima">Delima</option>
-                                    <option value="kasturi">Kasturi</option>
-                                    <option value="mawar">Mawar</option>
-                                    <option value="melur">Melur</option>
+                                    <option value="zamrud">Zamrud</option>
+                                    <option value="emas">Emas</option>
+                                    <option value="berlian">Berlian</option>
+                                    <option value="mutiara">Mutiara</option>
                                 </select>
                             </div>
                         </div>

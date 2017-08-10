@@ -5,12 +5,14 @@ th, tr {
 /* Admin page sidebar */
 .well i {
   color: #5ac1de;
-  font-size: 30px;
+  font-size: 50px;
 }
 .well:hover {
   opacity: 0.7;
 }
-
+.well .badge {
+  font-size: 20px;
+}
 .table-bg {
   background-color: #5ac1de;
   color: #fff;
@@ -35,13 +37,12 @@ th, tr {
 
 .bg-img h1 {
   font-size: 70px;
-  font-style: italic;
   font-weight: bold;
   height: auto
 }
 
-#information {
-  margin-top: 25px;
+.information {
+  margin-top: 20px;
 }
 
 /* Login page */

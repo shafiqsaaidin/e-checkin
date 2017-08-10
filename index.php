@@ -5,7 +5,8 @@
 <body>
   <div class="bg-img" align="center">
       <div class="container">
-          <h1>E-Checkin Kamsis</h1>
+          <h1>E-Checkin</h1>
+          <h3>Residential College</h3>
           <label><?php echo date("l, d-m-Y")." | ";?><span id="clock"><?php echo date("g:i:s A"); ?></span></label>
       </div>
   </div>
@@ -35,7 +36,7 @@
           <h1>Student Information</h1>
         </div>
         <div class="col-md-4">
-          <div id="information" class="input-group">
+          <div class="input-group information">
             <input type="text" class="form-control" placeholder="Search student" id="search_field">
             <div class="input-group-btn">
               <button class="btn btn-info" type="submit">
