@@ -11,7 +11,7 @@
       </div>
   </div>
   <nav class="navbar navbar-default">
-      <div class="container-fluid">
+      <div class="container">
           <div class="navbar-header">
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                   <span class="sr-only">Toggle navigation</span>
@@ -30,22 +30,8 @@
           </div><!--/.nav-collapse -->
       </div>
   </nav>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-8">
-          <h1>Student Information</h1>
-        </div>
-        <div class="col-md-4">
-          <div class="input-group information">
-            <input type="text" class="form-control" placeholder="Search student" id="search_field">
-            <div class="input-group-btn">
-              <button class="btn btn-info" type="submit">
-                <i class="fa fa-search" aria-hidden="true"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="container">
+      <h1>Student Information</h1>
       <div id="mytable" class="table-responsive">
           <table id="myTable" class="table table-hover table-bordered table-striped">
               <thead align="center">
