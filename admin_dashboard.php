@@ -68,7 +68,7 @@
             <h4>Scan (Out)</h4>
             <span class="badge">
               <?php
-                $total = mysqli_query($conn, "SELECT count(keluar) as total FROM public WHERE keluar!='' AND masuk=''");
+                $total = mysqli_query($conn, "SELECT count(keluar) as total FROM public WHERE keluar!='' AND masuk='' AND tarikh=date_format(now(), '%d/%m/%Y')");
                 $row = mysqli_fetch_array($total);
                 echo $row['total'];
               ?>
@@ -81,7 +81,7 @@
             <h4>Scan (In)</h4>
             <span class="badge">
               <?php
-                $total = mysqli_query($conn, "SELECT count(masuk) as total FROM public WHERE keluar!='' AND masuk!=''");
+                $total = mysqli_query($conn, "SELECT count(masuk) as total FROM public WHERE keluar!='' AND masuk!='' AND tarikh=date_format(now(), '%d/%m/%Y')");
                 $row = mysqli_fetch_array($total);
                 echo $row['total'];
               ?>
@@ -132,6 +132,7 @@
           <thead>
             <tr class="table-bg myHead">
               <th>Name</th>
+              <th>Date</th>
               <th>Matric no</th>
               <th>Ic no</th>
               <th>Class</th>
@@ -145,13 +146,14 @@
           </thead>
             <tbody>
               <?php
-                  $sql = "SELECT nama, no_matrik, user.ic, kelas, jabatan, kamsis, no_bilik, keluar, masuk, status
+                  $sql = "SELECT nama, tarikh, no_matrik, user.ic, kelas, jabatan, kamsis, no_bilik, keluar, masuk, status
                   FROM user JOIN public ON user.ic = public.ic WHERE masuk=''";
                   $result = mysqli_query($conn,$sql);
 
                   while ($row = mysqli_fetch_array($result)) {
                   echo "<tr>";
                   echo "<td>" . $row['nama'] . "</td>";
+                  echo "<td>" . $row['tarikh'] . "</td>";
                   echo "<td>" . $row['no_matrik'] . "</td>";
                   echo "<td>" . $row['ic'] . "</td>";
                   echo "<td>" . $row['kelas'] . "</td>";

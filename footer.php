@@ -10,7 +10,7 @@
         setInterval(function() {
           $clock.load("index.php #clock");
           $scores.load("index.php #mytable");
-          $adminTable.load("admin_dashboard.php #admin-table");
+          //$adminTable.load("admin_dashboard.php #admin-table");
           $dashboard.load("admin_dashboard.php #dashboard");
         }, 1000);
       });
