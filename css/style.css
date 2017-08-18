@@ -3,14 +3,21 @@ th, tr {
 }
 
 /* Admin page sidebar */
-.well i {
+.quick-panel {
+  text-align: center;
+  opacity: 0.8;
+}
+.quick-panel h4 {
+  display: inline;
+}
+.quick-panel i {
   color: #5ac1de;
   font-size: 50px;
 }
-.well:hover {
-  opacity: 0.7;
+.quick-panel:hover {
+  opacity: 1;
 }
-.well .badge {
+.quick-panel .badge {
   font-size: 20px;
 }
 .table-bg {
