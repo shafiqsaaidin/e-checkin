@@ -3,6 +3,8 @@
   require 'session.php';
   require_once 'connection.php';
 
+  $btnClass = "btn-info";
+
   function get_total_user() {
     $total = mysqli_query($conn, "SELECT COUNT(ic) as total FROM user");
     $row = mysqli_fetch_array($total);
@@ -10,12 +12,19 @@
   }
 
   if(isset($_POST['approve'])){
-    mysqli_query($conn, "UPDATE public SET status='approve' WHERE keluar!='' AND masuk=''");
+    mysqli_query($conn, "UPDATE public SET status='approved' WHERE keluar!='' AND masuk=''");
+  }
+
+  if(isset($_POST['block'])){
+    $ic = mysqli_real_escape_string($conn, $_POST['ic']);
+
+    $sql = "UPDATE public SET status='pending' WHERE ic = '$ic' AND masuk=''";
+
+    mysqli_query($conn, $sql);
   }
 ?>
-<link rel="stylesheet" href="css/dashboard.css">
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top">
+  <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -50,55 +59,72 @@
     <div id="dashboard">
       <div class="row placeholders">
         <div class="col-sm-3">
-          <div class="well">
-            <i class="fa fa-users" aria-hidden="true"></i>
-            <h4>Total User</h4>
-            <span class="badge">
-              <?php
-                $total = mysqli_query($conn, "SELECT COUNT(ic) as total FROM user");
-                $row = mysqli_fetch_array($total);
-                echo $row['total'];
-              ?>
-            </span>
+          <div class="panel panel-info quick-panel">
+            <div class="panel-body">
+              <i class="fa fa-users" aria-hidden="true"></i>
+            </div>
+            <div class="panel-footer">
+              <h4>Total User</h4>
+              <span class="badge">
+                <?php
+                  $total = mysqli_query($conn, "SELECT COUNT(ic) as total FROM user");
+                  $row = mysqli_fetch_array($total);
+                  echo $row['total'];
+                ?>
+              </span>
+            </div>
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="well">
-            <i class="fa fa-sign-out" aria-hidden="true"></i>
-            <h4>Scan (Out)</h4>
-            <span class="badge">
-              <?php
-                $total = mysqli_query($conn, "SELECT count(keluar) as total FROM public WHERE keluar!='' AND masuk='' AND tarikh=date_format(now(), '%d/%m/%Y')");
-                $row = mysqli_fetch_array($total);
-                echo $row['total'];
-              ?>
-            </span>
+          <div class="panel panel-info quick-panel">
+            <div class="panel-body">
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </div>
+            <div class="panel-footer">
+              <h4>Scan (Out)</h4>
+              <span class="badge">
+                <?php
+                  $total = mysqli_query($conn, "SELECT count(keluar) as total FROM public WHERE keluar!='' AND masuk='' AND tarikh=date_format(now(), '%d/%m/%Y')");
+                  $row = mysqli_fetch_array($total);
+                  echo $row['total'];
+                ?>
+              </span>
+            </div>
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="well">
-            <i class="fa fa-sign-in" aria-hidden="true"></i>
-            <h4>Scan (In)</h4>
-            <span class="badge">
-              <?php
-                $total = mysqli_query($conn, "SELECT count(masuk) as total FROM public WHERE keluar!='' AND masuk!='' AND tarikh=date_format(now(), '%d/%m/%Y')");
-                $row = mysqli_fetch_array($total);
-                echo $row['total'];
-              ?>
-            </span>
+          <div class="panel panel-info quick-panel">
+            <div class="panel-body">
+              <i class="fa fa-sign-in" aria-hidden="true"></i>
+            </div>
+            <div class="panel-footer">
+              <h4>Scan (In)</h4>
+              <span class="badge">
+                <?php
+                  $total = mysqli_query($conn, "SELECT count(masuk) as total FROM public WHERE keluar!='' AND masuk!='' AND tarikh=date_format(now(), '%d/%m/%Y')");
+                  $row = mysqli_fetch_array($total);
+                  echo $row['total'];
+                ?>
+              </span>
+            </div>
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="well">
-            <i class="fa fa-check" aria-hidden="true"></i>
-            <h4>Pending User</h4>
-            <span class="badge">
-              <?php
-                $total = mysqli_query($conn, "SELECT count(status) as total FROM public WHERE status='pending'");
-                $row = mysqli_fetch_array($total);
-                echo $row['total'];
-              ?>
-            </span>
+          <div class="panel panel-info quick-panel">
+            <div class="panel-body">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="panel-footer">
+              <h4>Pending User
+                <span class="badge">
+                  <?php
+                    $total = mysqli_query($conn, "SELECT count(status) as total FROM public WHERE status='pending' AND tarikh=date_format(now(), '%d/%m/%Y')");
+                    $row = mysqli_fetch_array($total);
+                    echo $row['total'];
+                  ?>
+                </span>
+              </h4>
+            </div>
           </div>
         </div>
       </div>
@@ -142,6 +168,7 @@
               <th>Scan (out)</th>
               <th>Scan (in)</th>
               <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
             <tbody>
@@ -163,6 +190,12 @@
                   echo "<td>" . $row['keluar'] . "</td>";
                   echo "<td>" . $row['masuk'] . "</td>";
                   echo "<td>" . $row['status'] . "</td>";
+                  echo "<td>
+                          <form method='POST' action='".htmlspecialchars($_SERVER['PHP_SELF'])."'>
+                            <input type='hidden' name='ic' value='".$row['ic']."'>
+                            <button type='submit' name='block' class='btn btn-xs btn-danger'>Block</button>
+                          </form>
+                        </td>";
                   echo "</tr>";
                 }
                 mysqli_close($conn);
