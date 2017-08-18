@@ -2,10 +2,25 @@
   require 'header.php';
   require 'session.php';
   require_once 'connection.php';
+
+  $msg = $msgClass = '';
+
+  if(isset($_POST['delete'])){
+    $ic = mysqli_real_escape_string($conn, $_POST['ic']);
+
+    $sql = "DELETE FROM user WHERE ic='$ic'";
+
+    if(mysqli_query($conn, $sql)){
+        $msg = "Delete successfull";
+        $msgClass = 'alert-success';
+    } else{
+        $msg = "Delete error".mysqli_error($conn);
+        $msgClass = 'alert-danger';
+    }
+  }
 ?>
-<link rel="stylesheet" href="css/dashboard.css">
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top">
+  <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -34,42 +49,78 @@
     </div>
   </nav> <!--### end navbar ###-->
 
-    <div class="container">
-      <h3 class="page-header"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbspEdit user</h3>
-      <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr class="table-bg">
-                <th>Nama</th>
-                <th>Kad Matrik</th>
-                <th>Kad Pengenalan</th>
-                <th>Kelas</th>
-                <th>Jabatan</th>
-                <th>Kamsis</th>
-                <th>Bilik</th>
-              </tr>
-            </thead>
-              <tbody>
-                <?php
-                    $sql = "SELECT * FROM user";
-                    $result = mysqli_query($conn,$sql);
-
-                    while ($row = mysqli_fetch_array($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $row['nama'] . "</td>";
-                    echo "<td>" . $row['no_matrik'] . "</td>";
-                    echo "<td>" . $row['ic'] . "</td>";
-                    echo "<td>" . $row['kelas'] . "</td>";
-                    echo "<td>" . $row['jabatan'] . "</td>";
-                    echo "<td>" . $row['kamsis'] . "</td>";
-                    echo "<td>" . $row['no_bilik'] . "</td>";
-                    echo "</tr>";
-                  }
-                  mysqli_close($conn);
-                ?>
-              </tbody>
-          </table>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h3><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbspEdit user</h3>
       </div>
+      <div class="col-md-4">
+        <div class="input-group information">
+          <input type="text" class="form-control" placeholder="Search student" id="search_field">
+          <div class="input-group-btn">
+            <button class="btn btn-info" type="submit">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div><br>
+    <?php if($msg !=''): ?>
+        <div class="alert <?php echo $msgClass; ?> alert-dismissable">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <?php echo $msg; ?>
+        </div>
+    <?php endif ?> <!--## Display message when register successfull/error ##-->
+    <div class="table-responsive">
+      <table id="myTable" class="table table-hover">
+        <thead>
+          <tr class="table-bg myHead">
+            <th>Name</th>
+            <th>Matric Number</th>
+            <th>Identity Card</th>
+            <th>Class</th>
+            <th>Department</th>
+            <th>Residential Block</th>
+            <th>Room Number</th>
+            <th colspan="2">Edit User</th>
+          </tr>
+        </thead>
+          <tbody>
+            <?php
+              $sql = "SELECT * FROM user";
+              $result = mysqli_query($conn,$sql);
+
+              while ($row = mysqli_fetch_array($result)) {
+                echo "<tr>";
+                echo "<td>" . $row['nama'] . "</td>";
+                echo "<td>" . $row['no_matrik'] . "</td>";
+                echo "<td>" . $row['ic'] . "</td>";
+                echo "<td>" . $row['kelas'] . "</td>";
+                echo "<td>" . $row['jabatan'] . "</td>";
+                echo "<td>" . $row['kamsis'] . "</td>";
+                echo "<td>" . $row['no_bilik'] . "</td>";
+                echo "<td>
+                        <a href='admin_edit_update.php?ic=".$row['ic']."' class='btn btn-xs btn-info'>
+                          <i class='fa fa-pencil-square-o' aria-hidden='true'></i> Edit
+                        </a>
+                      </td>";
+                echo "<td>
+                        <form method='POST' action='admin_edit.php'>
+                          <input type='hidden' name='ic' value='".$row['ic']."'>
+                          <button type='submit' onclick='return confirm(`Delete this user ".$row['ic']." ?`);' name='delete' class='btn btn-xs btn-danger'>
+                            <i class='fa fa-trash-o' aria-hidden='true'></i> Delete
+                          </button>
+                        </form>
+                      </td>";
+                echo "</tr>";
+              }
+            ?>
+          </tbody>
+      </table>
     </div>
+  </div>
 </body>
-<?php require 'footer.php'; ?>
+<?php
+  mysqli_close($conn);
+  require 'footer.php';
+?>
