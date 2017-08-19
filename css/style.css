@@ -5,7 +5,7 @@ th, tr {
 /* Admin page sidebar */
 .quick-panel {
   text-align: center;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 .quick-panel h4 {
   display: inline;
@@ -19,6 +19,12 @@ th, tr {
 }
 .quick-panel .badge {
   font-size: 20px;
+  background-color: #fff !important;
+  color: #000;
+}
+.quick-panel .panel-footer {
+  background-color: #5ac1de;
+  color: #fff;
 }
 .table-bg {
   background-color: #5ac1de;
