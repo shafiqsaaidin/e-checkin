@@ -59,6 +59,9 @@ th, tr {
 }
 
 /* Login page */
+.panel-bg {
+  background-color: rgba(90,193,222,0.3) !important;
+}
 .logo1 {
   display: block;
   margin: auto;

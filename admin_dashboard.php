@@ -3,6 +3,10 @@
   require 'session.php';
   require_once 'connection.php';
 
+  if($_SESSION['role'] != 'admin'){
+    header("location: guard_dashboard.php");
+  }
+
   $btnClass = "btn-info";
 
   function get_total_user() {

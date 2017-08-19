@@ -8,7 +8,12 @@
 
   $row = mysqli_fetch_array($ses_sql, MYSQLI_ASSOC);
 
-  $login_session = $row['username'];
+  //$login_session = $row['username'];
+  /*if(isset($_SESSION['login_user'] == 'admin')){
+    header("location: admin_dashboard.php");
+  } else {
+    header("location: guard_dashboard.php");
+  }*/
 
   if(!isset($_SESSION['login_user'])){
     header("location: login.php");

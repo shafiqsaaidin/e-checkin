@@ -7,7 +7,7 @@
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    $sql = "SELECT * FROM admin WHERE username='$username' and password=SHA2('$password', 512)";
+    $sql = "SELECT * FROM admin WHERE username='$username' and password=SHA2('$password', 256)";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
@@ -15,10 +15,18 @@
 
     if ($count == 1) {
       $_SESSION['login_user'] = $row['username'];
-      header("location: admin_dashboard.php");
+      $_SESSION['role'] = $row['user_level'];
+
+      if($row['user_level'] == 'admin'){ //for admin account
+        header("location: admin_dashboard.php");
+      } else {
+        header("location: guard_dashboard.php");
+      }
     }else {
+      //echo "Incorrect username or password";
       header("location: login.php");
     }
+
     mysqli_close($conn);
   }
 ?>
@@ -44,22 +52,26 @@
     </div>
   </nav>
   <div class="container">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-info">
-        <div class="panel-heading"><h4 class="text-center">Admin Login</h4></div>
+    <div class="col-md-4 col-md-offset-4">
+      <div class="panel panel-bg panel-info">
         <div class="panel-body">
           <img class="logo1" src="images/e_checkin.png" />
+          <p class="text-center"><label>E-Checkin</label> Login</p>
           <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="form-group">
-              <label for="name">Username:</label>
-              <input type="text" class="form-control" id="name" name="username" placeholder="Enter username"/>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user-o" aria-hidden="true"></i></span>
+                <input type="text" class="form-control input" id="name" name="username" placeholder="Enter username"/>
+              </div>
             </div>
             <div class="form-group">
-              <label for="passwd">Password:</label>
-              <input type="password" class="form-control" id="passwd" name="password" placeholder="Enter password"/>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i>&nbsp</span>
+              <input type="password" class="form-control input" id="passwd" name="password" placeholder="Enter password"/>
+              </div>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-block btn-info" name="login">Login</button>
+              <button type="submit" class="btn btn-sm btn-block btn-info" name="login">Login</button>
             </div>
           </form>
         </div>
