@@ -132,7 +132,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-4">
             <div class="input-group information">
               <input type="text" class="form-control" placeholder="Search student" id="search_field">
               <div class="input-group-btn">
@@ -141,6 +141,9 @@
                 </button>
               </div>
             </div>
+          </div>
+          <div class="col-md-4">
+            <button type="button" class="btn btn-info btn-block information" onclick="window.location.reload()"><i class="fa fa-refresh" aria-hidden="true"></i> Refresh table</button>
           </div>
           <div class="col-md-4">
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
