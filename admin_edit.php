@@ -18,6 +18,21 @@
         $msgClass = 'alert-danger';
     }
   }
+
+  if(isset($_POST['register'])){
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+
+    $sql = "INSERT INTO admin (username, password, email, user_level)
+    VALUES ('$username', SHA2('$password', 256), '$email', 'guard')";
+
+    if(mysqli_query($conn, $sql)){
+      return "success";
+    } else {
+      return "Error".mysqli_error();
+    }
+  }
 ?>
 <body>
   <nav class="navbar navbar-default">
@@ -35,8 +50,6 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="admin_dashboard.php"><i class="fa fa-address-book-o" aria-hidden="true"></i>&nbspDashboard</a></li>
           <li class="active"><a href="admin_edit.php"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbspEdit User</a></li>
-          <li><a href="admin_report.php"><i class="fa fa-bar-chart" aria-hidden="true"></i>&nbspReport</a></li>
-          <li><a href="#">Export</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp<?php echo $_SESSION['login_user']; ?>
             <span class="caret"></span></a>
@@ -117,6 +130,104 @@
             ?>
           </tbody>
       </table>
+    </div>
+    <hr><br>
+    <div class="row">
+      <h3 style="display: inline"><i class="fa fa-id-card-o" aria-hidden="true"></i> Guard List</h3>
+      <div style="display: inline; padding-left: 10px;">
+        <button type="button" name="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#myModal">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        </button>
+        <button type="button" name="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete_usr"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+      </div>
+    </div><br>
+    <div class="table-responsive">
+      <table id="myTable" class="table table-hover">
+        <thead>
+          <tr class="table-bg myHead">
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+          <tbody>
+            <?php
+              $sql = "SELECT * FROM admin WHERE user_level!='admin'";
+              $result = mysqli_query($conn,$sql);
+
+              while ($row = mysqli_fetch_array($result)) {
+                echo "<tr>";
+                echo "<td>" . $row['id'] . "</td>";
+                echo "<td>" . $row['username'] . "</td>";
+                echo "<td>" . $row['email'] . "</td>";
+                echo "<td>" . $row['user_level'] . "</td>";
+                echo "</tr>";
+              }
+            ?>
+          </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Guard</h4>
+        </div>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Username:</label>
+              <input type="text" required name="username" class="form-control" placeholder="username">
+            </div>
+            <div class="form-group">
+              <label>Password:</label>
+              <input type="password" required name="password" class="form-control" placeholder="password">
+            </div>
+            <div class="form-group">
+              <label>Email:</label>
+              <input type="email" name="email" required class="form-control" placeholder="email">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-sm btn-info" name="register">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--### Delete guard modal ###-->
+  <!-- Modal -->
+  <div id="delete_usr" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Guard</h4>
+        </div>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>User-Id:</label>
+              <input type="text" required name="user_id" class="form-control" placeholder="User Id">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-sm btn-danger" name="delete">Delete</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </body>

@@ -6,7 +6,7 @@
   <div class="bg-img" align="center">
       <div class="container">
           <h1>E-Checkin</h1>
-          <h3>Residential College</h3>
+          <h3>Kolej Kediaman</h3>
           <label><?php echo date("l, d-m-Y")." | ";?><span id="clock"><?php echo date("g:i:s A"); ?></span></label>
       </div>
   </div>
