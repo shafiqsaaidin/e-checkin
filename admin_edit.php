@@ -19,18 +19,35 @@
     }
   }
 
+  if(isset($_POST['del_guard'])){
+    $id = mysqli_real_escape_string($conn, $_POST['id']);
+
+    $sql = "DELETE FROM admin WHERE id='$id'";
+
+    if(mysqli_query($conn, $sql)){
+        $msg = "Delete successfull";
+        $msgClass = 'alert-success';
+    } else{
+        $msg = "Delete error";
+        $msgClass = 'alert-danger';
+    }
+  }
+
   if(isset($_POST['register'])){
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $role = mysqli_real_escape_string($conn, $_POST['user_role']);
 
     $sql = "INSERT INTO admin (username, password, email, user_level)
-    VALUES ('$username', SHA2('$password', 256), '$email', 'guard')";
+    VALUES ('$username', SHA2('$password', 256), '$email', '$role')";
 
     if(mysqli_query($conn, $sql)){
-      return "success";
-    } else {
-      return "Error".mysqli_error();
+        $msg = "Register successfull";
+        $msgClass = 'alert-success';
+    } else{
+        $msg = "Error";
+        $msgClass = 'alert-danger';
     }
   }
 ?>
@@ -132,15 +149,10 @@
       </table>
     </div>
     <hr><br>
-    <div class="row">
-      <h3 style="display: inline"><i class="fa fa-id-card-o" aria-hidden="true"></i> Guard List</h3>
-      <div style="display: inline; padding-left: 10px;">
-        <button type="button" name="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#myModal">
-          <i class="fa fa-plus-circle" aria-hidden="true"></i>
-        </button>
-        <button type="button" name="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete_usr"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-      </div>
-    </div><br>
+    <h3 style="display: inline; padding-right: 10px"><i class="fa fa-id-card-o" aria-hidden="true"></i> Guard List</h3>
+    <button style="margin-bottom: 10px;" type="button" name="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#myModal">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i>
+    </button><br>
     <div class="table-responsive">
       <table id="myTable" class="table table-hover">
         <thead>
@@ -149,11 +161,12 @@
             <th>Username</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Action</th>
           </tr>
         </thead>
           <tbody>
             <?php
-              $sql = "SELECT * FROM admin WHERE user_level!='admin'";
+              $sql = "SELECT * FROM admin ORDER BY user_level ASC";
               $result = mysqli_query($conn,$sql);
 
               while ($row = mysqli_fetch_array($result)) {
@@ -162,6 +175,14 @@
                 echo "<td>" . $row['username'] . "</td>";
                 echo "<td>" . $row['email'] . "</td>";
                 echo "<td>" . $row['user_level'] . "</td>";
+                echo "<td>
+                        <form method='POST' action='admin_edit.php'>
+                          <input type='hidden' name='id' value='".$row['id']."'>
+                          <button type='submit' onclick='return confirm(`Delete this user ".$row['username']." ?`);' name='del_guard' class='btn btn-xs btn-danger'>
+                            <i class='fa fa-trash-o' aria-hidden='true'></i> Delete
+                          </button>
+                        </form>
+                      </td>";
                 echo "</tr>";
               }
             ?>
@@ -178,10 +199,10 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add Guard</h4>
+          <h4 class="modal-title">Modal Header</h4>
         </div>
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-          <div class="modal-body">
+        <div class="modal-body">
+          <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <div class="form-group">
               <label>Username:</label>
               <input type="text" required name="username" class="form-control" placeholder="username">
@@ -194,42 +215,26 @@
               <label>Email:</label>
               <input type="email" name="email" required class="form-control" placeholder="email">
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-sm btn-info" name="register">Register</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!--### Delete guard modal ###-->
-  <!-- Modal -->
-  <div id="delete_usr" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add Guard</h4>
-        </div>
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-          <div class="modal-body">
             <div class="form-group">
-              <label>User-Id:</label>
-              <input type="text" required name="user_id" class="form-control" placeholder="User Id">
+              <label>User role</label>
+              <select class="form-control" name="user_role">
+                <option value="guard">Guard</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-sm btn-danger" name="delete">Delete</button>
-          </div>
-        </form>
+            <div class="form-group">
+              <button type="submit" class="btn btn-sm btn-info btn-block" name="register">Register</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
       </div>
+
     </div>
   </div>
+
 </body>
 <?php
   mysqli_close($conn);
