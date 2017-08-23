@@ -26,6 +26,13 @@
 
     mysqli_query($conn, $sql);
   }
+
+  if(isset($_POST['del_date'])){
+    $date = mysqli_real_escape_string($conn, $_POST['date']);
+    $sql = "DELETE FROM public WHERE tarikh='$date'";
+
+    mysqli_query($conn, $sql);
+  }
 ?>
 <body>
   <nav class="navbar navbar-default">
@@ -100,7 +107,7 @@
               <i class="fa fa-sign-in" aria-hidden="true"></i>
             </div>
             <div class="panel-footer">
-              <h4>Scan (In)</h4>
+              <h4><a data-toggle="modal" data-target="#scan_in">Scan (In)</a></h4>
               <span class="badge">
                 <?php
                   $total = mysqli_query($conn, "SELECT count(masuk) as total FROM public WHERE keluar!='' AND masuk!='' AND tarikh=date_format(now(), '%d/%m/%Y')");
@@ -137,7 +144,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-8">
             <div class="input-group information">
               <input type="text" class="form-control" placeholder="Search student" id="search_field">
               <div class="input-group-btn">
@@ -148,12 +155,13 @@
             </div>
           </div>
           <div class="col-md-4">
-            <button type="button" class="btn btn-info btn-block information" onclick="window.location.reload()"><i class="fa fa-refresh" aria-hidden="true"></i> Refresh table</button>
-          </div>
-          <div class="col-md-4">
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-              <button type="submit" class="btn btn-info btn-block information" name="approve"><i class="fa fa-check" aria-hidden="true"></i>&nbspApprove all</button>
-            </form>
+            <div class="btn-group pull-right">
+              <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                <button type="button" class="btn btn-success information" onclick="window.location.reload()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                <button type="submit" class="btn btn-info information" name="approve"><i class="fa fa-check" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-danger information" data-toggle="modal" data-target="#clean"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+              </form>
+            </div>
           </div><br>
         </div>
       </div>
@@ -203,11 +211,105 @@
                         </td>";
                   echo "</tr>";
                 }
-                mysqli_close($conn);
+                //mysqli_close($conn);
               ?>
             </tbody>
         </table>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div id="scan_in" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="table-bg">
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Matric no</th>
+                  <th>Kamsis</th>
+                  <th>Room</th>
+                  <th>Scan (out)</th>
+                  <th>Scan (in)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+                <tbody>
+                  <?php
+                      $sql = "SELECT nama, tarikh, no_matrik, user.ic, kelas, jabatan, kamsis, no_bilik, keluar, masuk, status
+                      FROM user JOIN public ON user.ic = public.ic WHERE keluar!='' AND masuk!='' AND tarikh=date_format(now(), '%d/%m/%Y') ORDER BY masuk DESC";
+                      $result = mysqli_query($conn,$sql);
+
+                      while ($row = mysqli_fetch_array($result)) {
+                      echo "<tr>";
+                      echo "<td>" . $row['nama'] . "</td>";
+                      echo "<td>" . $row['tarikh'] . "</td>";
+                      echo "<td>" . $row['no_matrik'] . "</td>";
+                      echo "<td>" . $row['kamsis'] . "</td>";
+                      echo "<td>" . $row['no_bilik'] . "</td>";
+                      echo "<td>" . $row['keluar'] . "</td>";
+                      echo "<td>" . $row['masuk'] . "</td>";
+                      echo "<td>" . $row['status'] . "</td>";
+                      echo "</tr>";
+                    }
+                  ?>
+                </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Modal -->
+<div id="clean" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete log</h4>
+      </div>
+      <div class="modal-body">
+        <legend>Available date</legend>
+        <ul class="list-group">
+          <?php
+            $total = mysqli_query($conn, "SELECT tarikh FROM public");
+            $row = mysqli_fetch_array($total);
+            echo "<li class='list-group-item'>".$row['tarikh']."</li>";
+          ?>
+        </ul>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+          <div class="input-group">
+            <input type="text" class="form-control" name="date" placeholder="02/08/2017">
+            <div class="input-group-btn">
+              <button class="btn btn-danger" type="submit" name="del_date">Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 </body>
-<?php require 'footer.php'; ?>
+<?php
+  mysqli_close($conn);
+  require 'footer.php';
+?>
