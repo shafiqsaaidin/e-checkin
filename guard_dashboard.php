@@ -37,7 +37,7 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="guard_dashboard.php"><i class="fa fa-address-book-o" aria-hidden="true"></i>&nbspDashboard</a></li>
+          <li class="active"><a href="admin_dashboard.php"><i class="fa fa-address-book-o" aria-hidden="true"></i>&nbspDashboard</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp<?php echo $_SESSION['login_user']; ?>
             <span class="caret"></span></a>
@@ -52,7 +52,7 @@
 
   <!-- ### Main content ### -->
   <div class="container">
-    <h3 class="page-header"><i class="fa fa-address-book-o" aria-hidden="true"></i>&nbspGuard Dashboard</h3>
+    <h3 class="page-header"><i class="fa fa-address-book-o" aria-hidden="true"></i>&nbspDashboard</h3>
     <div id="dashboard">
       <div class="row placeholders">
         <div class="col-sm-3">
@@ -95,7 +95,7 @@
               <i class="fa fa-sign-in" aria-hidden="true"></i>
             </div>
             <div class="panel-footer">
-              <h4>Scan (In)</h4>
+              <h4><a data-toggle="modal" data-target="#scan_in">Scan (In)</a></h4>
               <span class="badge">
                 <?php
                   $total = mysqli_query($conn, "SELECT count(masuk) as total FROM public WHERE keluar!='' AND masuk!='' AND tarikh=date_format(now(), '%d/%m/%Y')");
@@ -132,7 +132,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-8">
             <div class="input-group information">
               <input type="text" class="form-control" placeholder="Search student" id="search_field">
               <div class="input-group-btn">
@@ -143,12 +143,12 @@
             </div>
           </div>
           <div class="col-md-4">
-            <button type="button" class="btn btn-info btn-block information" onclick="window.location.reload()"><i class="fa fa-refresh" aria-hidden="true"></i> Refresh table</button>
-          </div>
-          <div class="col-md-4">
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-              <button type="submit" class="btn btn-info btn-block information" name="approve"><i class="fa fa-check" aria-hidden="true"></i>&nbspApprove all</button>
-            </form>
+            <div class="btn-group pull-right">
+              <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                <button type="button" class="btn btn-success information" onclick="window.location.reload()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                <button type="submit" class="btn btn-info information" name="approve"><i class="fa fa-check" aria-hidden="true"></i></button>
+              </form>
+            </div>
           </div><br>
         </div>
       </div>
@@ -198,11 +198,69 @@
                         </td>";
                   echo "</tr>";
                 }
-                mysqli_close($conn);
+                //mysqli_close($conn);
               ?>
             </tbody>
         </table>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div id="scan_in" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="table-bg">
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Matric no</th>
+                  <th>Kamsis</th>
+                  <th>Room</th>
+                  <th>Scan (out)</th>
+                  <th>Scan (in)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+                <tbody>
+                  <?php
+                      $sql = "SELECT nama, tarikh, no_matrik, user.ic, kelas, jabatan, kamsis, no_bilik, keluar, masuk, status
+                      FROM user JOIN public ON user.ic = public.ic WHERE keluar!='' AND masuk!='' AND tarikh=date_format(now(), '%d/%m/%Y') ORDER BY masuk DESC";
+                      $result = mysqli_query($conn,$sql);
+
+                      while ($row = mysqli_fetch_array($result)) {
+                      echo "<tr>";
+                      echo "<td>" . $row['nama'] . "</td>";
+                      echo "<td>" . $row['tarikh'] . "</td>";
+                      echo "<td>" . $row['no_matrik'] . "</td>";
+                      echo "<td>" . $row['kamsis'] . "</td>";
+                      echo "<td>" . $row['no_bilik'] . "</td>";
+                      echo "<td>" . $row['keluar'] . "</td>";
+                      echo "<td>" . $row['masuk'] . "</td>";
+                      echo "<td>" . $row['status'] . "</td>";
+                      echo "</tr>";
+                    }
+                  ?>
+                </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
-<?php require 'footer.php'; ?>
+<?php
+  mysqli_close($conn);
+  require 'footer.php';
+?>
