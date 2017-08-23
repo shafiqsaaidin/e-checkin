@@ -15,7 +15,7 @@
     $sql1 = "INSERT INTO public(ic, masuk, keluar, tarikh, status)
         VALUES($ic, '', date_format(now(), '%r'), date_format(now(), '%d/%m/%Y'), 'pending')";
 
-    $sql2 = "UPDATE public SET masuk=date_format(now(), '%r') WHERE ic=$ic AND masuk='' AND status='approve'";
+    $sql2 = "UPDATE public SET masuk=date_format(now(), '%r') WHERE ic=$ic AND masuk='' AND status='approved'";
 
     // User check
     $check_user = mysqli_query($conn, $sql);
