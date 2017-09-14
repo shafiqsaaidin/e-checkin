@@ -226,13 +226,25 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <div class="col-md-4">
+            <h4 class="modal-title">Scanned In Student</h4>
+          </div>
+          <div class="col-md-6">
+            <div style="margin-top:1px;" class="input-group information">
+              <input type="text" class="form-control input-sm" placeholder="Search student" id="search_student">
+              <div class="input-group-btn">
+                <button class="btn btn-info btn-sm" type="submit">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-body">
           <div class="table-responsive">
-            <table class="table table-bordered">
+            <table id="scannedTable" class="table table-bordered">
               <thead>
-                <tr class="table-bg">
+                <tr class="table-bg myHead">
                   <th>Name</th>
                   <th>Date</th>
                   <th>Matric no</th>
