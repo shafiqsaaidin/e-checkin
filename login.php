@@ -3,6 +3,10 @@
   require 'connection.php';
   session_start();
 
+  // Error message and class
+  $msg = '';
+  $msgClass = '';
+
   if(isset($_POST['login'])){
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
@@ -24,12 +28,19 @@
       }
     }else {
       //echo "Incorrect username or password";
-      header("location: login.php");
+      //header("location: login.php");
+      $msg = "Invalid username or password, try again.";
+      $msgClass = "alert-danger";
     }
 
     mysqli_close($conn);
   }
 ?>
+<style>
+  body {
+    background-color: rgba(90,193,222,0.3);
+  }
+</style>
 <body>
   <nav class="navbar navbar-default">
     <div class="container">
@@ -53,6 +64,12 @@
   </nav>
   <div class="container">
     <div class="col-md-4 col-md-offset-4">
+      <?php if($msg != ""): ?>
+        <div class="alert <?php echo $msgClass; ?> alert-dismissable fade in">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <?php echo $msg; ?>
+        </div>
+      <?php endif ?>
       <div class="panel panel-bg panel-info">
         <div class="panel-body">
           <img class="logo1" src="images/e_checkin.png" />
